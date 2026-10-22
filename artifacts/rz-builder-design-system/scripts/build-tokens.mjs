@@ -74,7 +74,45 @@ function hexToHslChannels(hex) {
 }
 
 function toFontStack(value) {
-  return Array.isArray(value) ? value.join(", ") : value;
+  const stack = Array.isArray(value) ? value : [value];
+  return stack
+    .map((family) => (/[\s,]/.test(family) ? `"${family}"` : family))
+    .join(", ");
+}
+
+function kebabCase(value) {
+  return value.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+}
+
+function cssTokenVariables(node, prefix, tokens, output = {}) {
+  if (node && typeof node === "object" && "$value" in node) {
+    output[prefix] = resolveValue(node, tokens);
+    return output;
+  }
+  if (!node || typeof node !== "object" || Array.isArray(node)) return output;
+
+  for (const [key, child] of Object.entries(node)) {
+    if (key.startsWith("$")) continue;
+    cssTokenVariables(child, `${prefix}-${kebabCase(key)}`, tokens, output);
+  }
+  return output;
+}
+
+function customPropertyBlock(values) {
+  return Object.entries(values)
+    .map(([name, value]) => `  ${name}: ${value};`)
+    .join("\n");
+}
+
+function resolveTree(node, tokens) {
+  if (Array.isArray(node)) return node.map((value) => resolveTree(value, tokens));
+  if (!node || typeof node !== "object") return node;
+  if ("$value" in node) return resolveValue(node, tokens);
+  return Object.fromEntries(
+    Object.entries(node)
+      .filter(([key]) => !key.startsWith("$"))
+      .map(([key, value]) => [key, resolveTree(value, tokens)]),
+  );
 }
 
 function normalizeHex(hex) {
@@ -162,6 +200,98 @@ function buildCss(tokens) {
   replacements.__DS_RADIUS__ = resolveValue(tokens.radius.base, tokens);
   replacements.__DS_SPACING__ = resolveValue(tokens.spacing.base, tokens);
 
+  const primitiveVariables = cssTokenVariables(
+    tokens.primitive.color.neutral,
+    "--neutral",
+    tokens,
+  );
+  const lightStatusVariables = cssTokenVariables(
+    tokens.status.light,
+    "--status",
+    tokens,
+  );
+  const darkStatusVariables = cssTokenVariables(
+    tokens.status.dark,
+    "--status",
+    tokens,
+  );
+  const semanticVariables = (mode) =>
+    Object.fromEntries(
+      Object.entries(
+        cssTokenVariables(tokens.semantic[mode], "--semantic", tokens),
+      ).map(([name, value]) => [name.replace("--semantic-", "--"), value]),
+    );
+  const lightSemanticVariables = semanticVariables("light");
+  const darkSemanticVariables = semanticVariables("dark");
+  const themeAliases = [
+    ...Object.keys(primitiveVariables).map((name) => {
+      const suffix = name.replace("--", "");
+      return `  --color-${suffix}: var(${name});`;
+    }),
+    ...Object.keys(lightStatusVariables).map((name) => {
+      const suffix = name.replace("--status-", "");
+      return `  --color-status-${suffix}: var(${name});`;
+    }),
+  ].join("\n");
+  replacements.__DS_THEME_TOKEN_ALIASES__ = themeAliases;
+  replacements.__DS_ROOT_TOKEN_VALUES__ = customPropertyBlock({
+    ...primitiveVariables,
+    ...lightStatusVariables,
+    ...lightSemanticVariables,
+    ...cssTokenVariables(tokens.spacing.scale, "--space", tokens),
+    ...cssTokenVariables(tokens.sizing.icon, "--icon", tokens),
+    ...cssTokenVariables(tokens.sizing.control, "--control", tokens),
+    "--border-width-thin": resolveValue(tokens.sizing.border.thin, tokens),
+    "--focus-width": resolveValue(tokens.sizing.border.focus, tokens),
+    ...cssTokenVariables(tokens.motion, "--motion", tokens),
+  });
+  replacements.__DS_DARK_STATUS_VALUES__ =
+    customPropertyBlock({
+      ...darkStatusVariables,
+      ...darkSemanticVariables,
+    });
+
+  const scaleAliases = {};
+  for (const [name, node] of Object.entries(tokens.typography.scale)) {
+    scaleAliases[`--text-${kebabCase(name)}`] = resolveValue(
+      node.fontSize,
+      tokens,
+    );
+    scaleAliases[`--text-${kebabCase(name)}--line-height`] = resolveValue(
+      node.lineHeight,
+      tokens,
+    );
+  }
+  const weights = cssTokenVariables(
+    tokens.typography.fontWeight,
+    "--font-weight",
+    tokens,
+  );
+  const radii = cssTokenVariables(tokens.radius.scale, "--radius", tokens);
+  replacements.__DS_THEME_SCALE_TOKENS__ = customPropertyBlock({
+    ...scaleAliases,
+    ...weights,
+    ...radii,
+  });
+
+  const utilitySizeMap = {
+    xs: "caption",
+    sm: "bodySM",
+    base: "bodyMD",
+    lg: "bodyLG",
+    xl: "headingMD",
+    "2xl": "headingLG",
+    "3xl": "headingXL",
+    "4xl": "display",
+  };
+  for (const [utility, scale] of Object.entries(utilitySizeMap)) {
+    replacements[`__DS_TEXT_${utility.replace(/[^A-Z0-9]/gi, "_").toUpperCase()}__`] =
+      resolveValue(tokens.typography.scale[scale].fontSize, tokens);
+    replacements[
+      `__DS_TEXT_${utility.replace(/[^A-Z0-9]/gi, "_").toUpperCase()}_LINE__`
+    ] = resolveValue(tokens.typography.scale[scale].lineHeight, tokens);
+  }
+
   for (const [token, value] of Object.entries(replacements)) {
     css = css.split(token).join(value);
   }
@@ -181,13 +311,28 @@ function buildTs(tokens) {
       light: colorEntries("light", tokens),
       dark: colorEntries("dark", tokens),
     },
+    primitive: resolveTree(tokens.primitive, tokens),
+    semantic: {
+      light: resolveTree(tokens.semantic.light, tokens),
+      dark: resolveTree(tokens.semantic.dark, tokens),
+    },
+    status: resolveTree(tokens.status, tokens),
+    sizing: resolveTree(tokens.sizing, tokens),
+    motion: resolveTree(tokens.motion, tokens),
+    breakpoint: resolveTree(tokens.breakpoint, tokens),
     fontFamily: {
       sans: resolveValue(tokens.typography.fontFamily.sans, tokens),
       serif: resolveValue(tokens.typography.fontFamily.serif, tokens),
       mono: resolveValue(tokens.typography.fontFamily.mono, tokens),
     },
+    typography: {
+      scale: resolveTree(tokens.typography.scale, tokens),
+      fontWeight: resolveTree(tokens.typography.fontWeight, tokens),
+    },
     radius: resolveValue(tokens.radius.base, tokens),
+    radiusScale: resolveTree(tokens.radius.scale, tokens),
     spacing: resolveValue(tokens.spacing.base, tokens),
+    spacingScale: resolveTree(tokens.spacing.scale, tokens),
   };
   return `/* GENERATED FROM tokens.json -- DO NOT EDIT. Run scripts/build-tokens.mjs. */
 // Portable design tokens (colors as hex). Web consumes the theme via

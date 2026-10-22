@@ -1,4 +1,4 @@
-import { ArrowRight, Loader2, Mail } from 'lucide-react';
+import { ArrowRight, Mail } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Row } from '../parts';
 
@@ -7,10 +7,11 @@ export function ButtonDemo() {
     <div className="space-y-6 rounded-xl border bg-card p-6 text-card-foreground">
       <Row label="Variants">
         <Button>Default</Button>
+        <Button variant="primary">Primary</Button>
         <Button variant="secondary">Secondary</Button>
+        <Button variant="tertiary">Tertiary</Button>
         <Button variant="outline">Outline</Button>
         <Button variant="ghost">Ghost</Button>
-        <Button variant="link">Link</Button>
         <Button variant="destructive">Destructive</Button>
       </Row>
       <Row label="Sizes">
@@ -31,9 +32,7 @@ export function ButtonDemo() {
       </Row>
       <Row label="States">
         <Button disabled>Disabled</Button>
-        <Button disabled>
-          <Loader2 className="animate-spin" /> Loading
-        </Button>
+        <Button loading>Loading</Button>
       </Row>
     </div>
   );

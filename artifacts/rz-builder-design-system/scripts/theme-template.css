@@ -64,27 +64,28 @@
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
+__DS_THEME_TOKEN_ALIASES__
 
   --font-sans: var(--app-font-sans);
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
 
-  --text-xs: 0.75rem;
-  --text-xs--line-height: calc(1 / 0.75);
-  --text-sm: 0.875rem;
-  --text-sm--line-height: calc(1.25 / 0.875);
-  --text-base: 1rem;
-  --text-base--line-height: calc(1.5 / 1);
-  --text-lg: 1.125rem;
-  --text-lg--line-height: calc(1.75 / 1.125);
-  --text-xl: 1.25rem;
-  --text-xl--line-height: calc(1.75 / 1.25);
-  --text-2xl: 1.5rem;
-  --text-2xl--line-height: calc(2 / 1.5);
-  --text-3xl: 1.875rem;
-  --text-3xl--line-height: calc(2.25 / 1.875);
-  --text-4xl: 2.25rem;
-  --text-4xl--line-height: calc(2.5 / 2.25);
+  --text-xs: __DS_TEXT_XS__;
+  --text-xs--line-height: __DS_TEXT_XS_LINE__;
+  --text-sm: __DS_TEXT_SM__;
+  --text-sm--line-height: __DS_TEXT_SM_LINE__;
+  --text-base: __DS_TEXT_BASE__;
+  --text-base--line-height: __DS_TEXT_BASE_LINE__;
+  --text-lg: __DS_TEXT_LG__;
+  --text-lg--line-height: __DS_TEXT_LG_LINE__;
+  --text-xl: __DS_TEXT_XL__;
+  --text-xl--line-height: __DS_TEXT_XL_LINE__;
+  --text-2xl: __DS_TEXT_2XL__;
+  --text-2xl--line-height: __DS_TEXT_2XL_LINE__;
+  --text-3xl: __DS_TEXT_3XL__;
+  --text-3xl--line-height: __DS_TEXT_3XL_LINE__;
+  --text-4xl: __DS_TEXT_4XL__;
+  --text-4xl--line-height: __DS_TEXT_4XL_LINE__;
   --text-5xl: 3rem;
   --text-5xl--line-height: 1;
   --text-6xl: 3.75rem;
@@ -96,10 +97,8 @@
   --text-9xl: 8rem;
   --text-9xl--line-height: 1;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+__DS_THEME_SCALE_TOKENS__
+  --default-transition-duration: var(--motion-normal);
 }
 
 /* LIGHT MODE */
@@ -152,6 +151,7 @@
   --app-font-mono: __DS_FONT_MONO__;
   --radius: __DS_RADIUS__;
   --spacing: __DS_SPACING__;
+__DS_ROOT_TOKEN_VALUES__
 
   /* Computed contrast borders (fallback then modern color-mix syntax). */
   --sidebar-primary-border: hsl(var(--sidebar-primary));
@@ -214,6 +214,7 @@
   --chart-3: __DS_DARK_CHART3__;
   --chart-4: __DS_DARK_CHART4__;
   --chart-5: __DS_DARK_CHART5__;
+__DS_DARK_STATUS_VALUES__
 
   --sidebar-primary-border: hsl(var(--sidebar-primary));
   --sidebar-primary-border: hsl(from hsl(var(--sidebar-primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
@@ -315,5 +316,16 @@
   .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

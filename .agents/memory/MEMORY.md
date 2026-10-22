@@ -1,0 +1,1 @@
+- [RZ Builder identity](rz-builder-identity.md) — framework-aware Universal ZIP-to-APK Builder; preserve the exact brand name and supplied logo lockup.

@@ -7,8 +7,9 @@ on it and import its theme and components directly.
 
 ## What's here
 
-- `tokens.json` — the single source of truth (DTCG format): colors (full light
-  and dark sets), typography, spacing, and radius.
+- `tokens.json` — the single source of truth (DTCG format): neutral primitives,
+  semantic light/dark colors, status colors, typography, spacing, radii, sizing,
+  motion, and responsive test breakpoints.
 - `scripts/build-tokens.mjs` — generates the outputs below from `tokens.json`.
 - `src/index.css` — GENERATED token theme (web), exported as `./styles.css`.
 - `src/generated/tokens.tsx` — GENERATED hex token object, the package's `.` and
@@ -19,7 +20,9 @@ on it and import its theme and components directly.
   original “UNIVERSAL APK BUILDER” tagline.
 - `src/components/ui/` — the initial shadcn scaffold, exported as
   `./components/*`. Generated systems keep and theme it; Figma imports prune and
-  restyle it; code imports replace it with the source component library.
+  restyle it; code imports replace it with the source component library. RZ
+  Builder additions include `Button` loading/size/variant behavior,
+  `IconButton`, and typed `BuildStatusBadge`.
 - `src/lib/` (`cn`) and `src/hooks/` — exported as `./lib/*` and `./hooks/*`.
 - `src/App.tsx` — the entry point for the living style guide.
 - `src/preview/DesignSystemBrowser.tsx` — the persistent grouped navigation,
@@ -48,13 +51,20 @@ Every source file in this package is a `.tsx` file, including token, utility,
 and hook modules with no JSX, so every export below is a single `*.tsx` glob. Do
 not add `.ts` files here.
 
-## Source-derived visual direction
+## Approved visual direction
 
-The supplied logo is the visual source: near-black backgrounds, layered silver
-chrome, blue glass, cyan edge light, and sharp white highlights. The dark theme
-maps directly to that image; the light theme is a derived, readable counterpart.
-The image does not document component usage rules, so no source-specific do/don't
-guidelines are claimed.
+Use the user's Silver Chrome Premium Tech direction: obsidian backgrounds,
+restrained silver highlights, neutral gray surfaces, precise borders, and
+readable typography. The supplied logo remains an unchanged image asset; do not
+recreate or replace its wordmark or its “UNIVERSAL APK BUILDER” tagline. Avoid
+excessive neon and decorative glow. The light theme is a contrast-checked
+counterpart. Product behavior and UI usage rules must come from the product
+implementation, not be inferred from the logo.
+
+The workspace currently contains this design-system package and a health-only
+API server, not an RZ Builder web client or Android application. Do not present
+preview examples as live projects or builds, and do not claim Android, APK,
+provenance, or device acceptance behavior is implemented.
 
 ## What this package exports
 

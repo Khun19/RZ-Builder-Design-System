@@ -38,6 +38,12 @@ const ButtonDemo = lazyPage(() =>
 const ButtonGroupDemo = lazyPage(() =>
   import('./demos/button-group').then(({ ButtonGroupDemo }) => ButtonGroupDemo),
 );
+const IconButtonDemo = lazyPage(() =>
+  import('./demos/icon-button').then(({ IconButtonDemo }) => IconButtonDemo),
+);
+const BuildStatusDemo = lazyPage(() =>
+  import('./demos/build-status').then(({ BuildStatusDemo }) => BuildStatusDemo),
+);
 const CalendarDemo = lazyPage(() =>
   import('./demos/calendar').then(({ CalendarDemo }) => CalendarDemo),
 );
@@ -193,7 +199,7 @@ export type NavGroup = {
 export const DESIGN_SYSTEM = {
   title: 'RZ Builder Design System',
   description:
-    'A focused visual system for framework-aware Android builds, drawn from the RZ Builder metallic glass mark.',
+    'Silver Chrome Premium Tech design foundations for RZ Builder.',
 } as const;
 
 export const OVERVIEW_ENTRY: PreviewEntry = {
@@ -262,6 +268,12 @@ export const NAV_GROUPS: NavGroup[] = [
         name: 'Button group',
         description: 'Attached actions, labels, and separators.',
         Page: ButtonGroupDemo,
+      },
+      {
+        id: 'icon-button',
+        name: 'Icon button',
+        description: 'Icon-only actions with required accessible names.',
+        Page: IconButtonDemo,
       },
       {
         id: 'toggle',
@@ -534,6 +546,12 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     name: 'Feedback',
     entries: [
+      {
+        id: 'build-status',
+        name: 'Build status',
+        description: 'Typed labels for queued, running, completed, and unverified states.',
+        Page: BuildStatusDemo,
+      },
       {
         id: 'alert',
         name: 'Alert',
