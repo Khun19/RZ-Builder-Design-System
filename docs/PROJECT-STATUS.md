@@ -33,11 +33,11 @@ Remove retired external development-platform integration from tracked repository
 - External account/app authorization review: **NOT RUN**; repository file edits cannot revoke account-level authorization.
 - Merge to main: **NOT RUN**
 
-No passing CI result is claimed in this handoff. The branch must be reviewed and its exact-head checks must pass before merge.
+The PASS results above apply only to the recorded SHA `e473f1de19cb688c90e63f6dd51ffed71382a3bf`. This status-document update creates a newer PR head, so its own exact-head CI must pass before merge.
 
 ## Next action
 
-Open a pull request from this branch to `main`, inspect every changed file, wait for GitHub Actions, and fix any lockfile or build regression before considering merge. Keep the existing CI-only PR coordinated so there are no competing versions of the workflow change.
+Keep PR #2 in draft while reviewing every changed file and resolving the repository metadata blocker. Verify GitHub Actions on the newest PR head before considering merge. PR #1 is closed as superseded.
 
 ## Required integration boundary
 
