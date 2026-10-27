@@ -13,7 +13,7 @@ Build a stable, reusable RZ Builder Design System first, then integrate it with 
 - Keep one logical objective per pull request where practical.
 - Preserve the existing pnpm lockfile and supply-chain policy. Use `pnpm install --frozen-lockfile` in CI.
 - Keep secrets out of source, issues, commits, screenshots, and logs.
-- Do not reintroduce Replit-specific files, dependencies, environment variables, or plugins.
+- Do not reintroduce retired external-platform files, dependencies, environment variables, or plugins.
 - Do not couple Design System CI to Android build/device acceptance. They are separate gates.
 - At the end of each work session, update the status/handoff record with the exact main SHA, branch/PR, changed paths, checks and blockers.
 
