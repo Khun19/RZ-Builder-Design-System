@@ -4,7 +4,7 @@ Updated: 2026-10-27 (UTC)
 Repository: `Khun19/RZ-Builder-Design-System`
 Default branch: `main`
 Baseline main SHA inspected: `e259cbf53054c06bdc774c4e2f4a41697ca066e7`
-Working branch: `chore/remove-replit-and-document-workflow-20261027`
+Working branch: platform-removal and workflow stabilization branch (see the linked pull request).
 
 ## Current objective
 
