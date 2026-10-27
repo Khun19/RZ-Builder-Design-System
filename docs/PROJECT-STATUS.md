@@ -23,12 +23,14 @@ Remove retired external development-platform integration from tracked repository
 ## Validation status
 
 - Repository edits: **DONE ON BRANCH**
-- Lockfile consistency: **PENDING CI**
-- Token contrast: **PENDING CI**
-- Workspace typecheck: **PENDING CI**
-- Workspace build: **PENDING CI**
-- Full repository reference scan: **PENDING**
+- Frozen-lockfile install: **PASS** (run 40464284960, head `e473f1de19cb688c90e63f6dd51ffed71382a3bf`)
+- Token contrast: **PASS** (run 40464284960, same head SHA)
+- Workspace typecheck: **PASS** (run 40464284960, same head SHA)
+- Workspace build: **PASS** (run 40464284960, same head SHA)
+- Full repository reference scan: **PENDING**; targeted scan of manifests, lockfile, Vite configs, root README, workflow docs, and package docs found no remaining references.
 - Builder integration: **NOT RUN**
+- Repository homepage metadata cleanup: **BLOCKED**; the repo still has an external preview URL in its GitHub Website field, and the available GitHub connector cannot write repository settings.
+- External account/app authorization review: **NOT RUN**; repository file edits cannot revoke account-level authorization.
 - Merge to main: **NOT RUN**
 
 No passing CI result is claimed in this handoff. The branch must be reviewed and its exact-head checks must pass before merge.
