@@ -27,12 +27,12 @@ jobs:
         shell: bash
         run: |
           platform_pattern="$(printf '%s%s' 'rep' 'lit')"
-          if git grep -ni "$platform_pattern" -- .; then
+          if git grep -ni "$platform_pattern" -- . || git ls-files | grep -ni "$platform_pattern"; then
             echo "::error::Retired platform references remain in tracked files."
             exit 1
           fi
           env_pattern="$(printf '%s%s' 'REPL' '_ID')"
-          if git grep -ni "$env_pattern" -- .; then
+          if git grep -ni "$env_pattern" -- . || git ls-files | grep -ni "$env_pattern"; then
             echo "::error::Retired platform environment references remain in tracked files."
             exit 1
           fi
