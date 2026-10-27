@@ -23,17 +23,17 @@ Remove retired external development-platform integration from tracked repository
 ## Validation status
 
 - Repository edits: **DONE ON BRANCH**
-- Frozen-lockfile install: **PASS** (run 40464659535, head `e013e1df2df1281ce0d20c56499b92f25eee5322`)
-- Token contrast: **PASS** (run 40464659535, same head SHA)
-- Workspace typecheck: **PASS** (run 40464659535, same head SHA)
-- Workspace build: **PASS** (run 40464659535, same head SHA)
-- Automated tracked-file reference scan: **PASS** on SHA `e013e1df2df1281ce0d20c56499b92f25eee5322`; run 40464659535 confirms no retired platform identifiers in tracked file contents or paths.
+- Frozen-lockfile install: **PASS** (run 40464789348, head `3eb79153f7df304b29a149b243cc144fd9b16d59`)
+- Token contrast: **PASS** (run 40464789348, same head SHA)
+- Workspace typecheck: **PASS** (run 40464789348, same head SHA)
+- Workspace build: **PASS** (run 40464789348, same head SHA)
+- Automated tracked-file reference scan: **PASS** on SHA `3eb79153f7df304b29a149b243cc144fd9b16d59`; run 40464789348 confirms no retired platform identifiers in tracked file contents or paths.
 - Builder integration: **NOT RUN**
 - Repository homepage metadata cleanup: **BLOCKED**; the repo still has an external preview URL in its GitHub Website field, and the available GitHub connector cannot write repository settings.
 - External account/app authorization review: **NOT RUN**; repository file edits cannot revoke account-level authorization.
 - Merge to main: **NOT RUN**
 
-The PASS results above apply to the recorded SHA `e013e1df2df1281ce0d20c56499b92f25eee5322`. This status-document update creates a newer PR head, so its own exact-head CI must pass before merge.
+The recorded CI run above passed on SHA `3eb79153f7df304b29a149b243cc144fd9b16d59`. This file is a handoff snapshot, not a substitute for live checks; verify the latest PR head in GitHub Actions before merge.
 
 ## Next action
 
