@@ -1,28 +1,48 @@
-name: NodeJS with Webpack
+name: Design System CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: design-system-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-
+    env:
+      PORT: 20455
+      BASE_PATH: /rz-builder-design-system/
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
-    - name: Build
-      run: |
-        npm install
-        npx webpack
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check design token contrast
+        run: pnpm --filter @workspace/rz-builder-design-system run test:tokens
+
+      - name: Typecheck workspace
+        run: pnpm run typecheck
+
+      - name: Build workspace
+        run: pnpm run build
