@@ -1,1 +1,3 @@
 - [RZ Builder identity](rz-builder-identity.md) — framework-aware Universal ZIP-to-APK Builder; preserve the exact brand name and supplied logo lockup.
+- [Design System workflow and handoff](../../docs/DEVELOPMENT-WORKFLOW.md) — phase gates, PR rules, and Builder integration boundary.
+- [Current project status](../../docs/PROJECT-STATUS.md) — update after every work session with exact SHAs and validation evidence.
