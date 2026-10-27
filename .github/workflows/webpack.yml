@@ -23,6 +23,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Verify retired platform references are absent
+        shell: bash
+        run: |
+          platform_pattern="$(printf '%s%s' 'rep' 'lit')"
+          if git grep -ni "$platform_pattern" -- .; then
+            echo "::error::Retired platform references remain in tracked files."
+            exit 1
+          fi
+          env_pattern="$(printf '%s%s' 'REPL' '_ID')"
+          if git grep -ni "$env_pattern" -- .; then
+            echo "::error::Retired platform environment references remain in tracked files."
+            exit 1
+          fi
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
