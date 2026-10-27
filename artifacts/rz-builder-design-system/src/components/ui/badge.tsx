@@ -17,7 +17,7 @@ const badgeVariants = cva(
           // hover-elevate provides the hover interaction
           "border-transparent bg-secondary text-secondary-foreground",
         destructive:
-          // @replit shadow-xs instead of shadow, no hover because we use hover-elevate
+          // Use shadow-xs; hover-elevate provides the hover interaction
           "border-transparent bg-destructive text-destructive-foreground shadow-xs",
           // Use the badge outline token for the outline variant
         outline: "text-foreground border [border-color:var(--badge-outline)]",
